@@ -2,8 +2,13 @@
 // import axios from 'axios';
 import cachios from 'cachios';
 import md5 from 'md5';
-import auth from 'auth.json'; // use process.env?
 
+const auth = {
+  marvel: {
+    public: process.env.REACT_APP_MARVEL_PUBLIC,
+    private: process.env.REACT_APP_MARVEL_PRIVATE
+  }
+}
 const ts = Date.now();
 const authParams = {
   apikey: auth.marvel.public,
