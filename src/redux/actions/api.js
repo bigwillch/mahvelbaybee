@@ -32,6 +32,7 @@ cachios.getCacheIdentifier = function (config) {
 };
 
 export const API_RESPONSE = 'API_RESPONSE';
+export const API_CLEAR = 'API_CLEAR';
 
 // Action creators
 export const apiResponse = (response) => {
@@ -39,6 +40,15 @@ export const apiResponse = (response) => {
     type: API_RESPONSE,
     payload: {
       results: response.data.data.results
+    }
+  }
+}
+
+export const apiClear = () => {
+  return {
+    type: API_CLEAR,
+    payload: {
+      results: []
     }
   }
 }
@@ -75,6 +85,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case API_RESPONSE:
+    case API_CLEAR:
       return { ...state, results: action.payload.results }
     default:
       return state

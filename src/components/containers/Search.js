@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { apiCall } from 'redux/actions/api'
+import { apiCall, apiClear } from 'redux/actions/api'
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onChange: (params, endpoint) => {
       dispatch(apiCall(params, endpoint))
-    }
+    },
+    clearSearch: () => dispatch(apiClear())
   }
 }
 
@@ -15,29 +16,35 @@ class Search extends Component {
    query: '',
   }
 
+  clearSearch = () => {
+    this.search.value = '';
+    this.props.clearSearch()
+  }
+
   handleInputChange = () => {
-   this.setState({
+    this.setState({
      query: this.search.value
-   }, () => {
+    }, () => {
      if (this.state.query && this.state.query.length > 1) {
        if (this.state.query.length % 2 === 0) {
          this.props.onChange({...this.props.params, [this.props.query]: this.state.query}, this.props.endpoint);
        }
      } else if (!this.state.query) {
+       this.clearSearch();
      }
-   })
+    })
   }
 
   render() {
    return (
-     <form>
+     <div>
        <input
          placeholder="Search for..."
          ref={input => this.search = input}
          onChange={this.handleInputChange}
        />
-       <p>{this.state.query}</p>
-     </form>
+       <button onClick={ this.clearSearch }>Clear</button>
+     </div>
    )
   }
 }
