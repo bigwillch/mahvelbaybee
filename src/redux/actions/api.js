@@ -1,7 +1,7 @@
 // import { createActions, handleActions, combineActions } from 'redux-actions';
 import axios from 'axios';
 import md5 from 'md5';
-import auth from 'auth.json';
+import auth from 'auth.json'; // use process.env?
 
 export const API_RESPONSE = 'API_RESPONSE';
 
@@ -41,7 +41,6 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case API_RESPONSE:
-      console.log(action);
       return { ...state, results: action.payload.results }
     default:
       return state

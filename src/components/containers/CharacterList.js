@@ -1,34 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { apiCall } from 'redux/actions/api'
+// import { apiCall } from 'redux/actions/api'
+import Search from 'components/containers/Search'
 import Character from 'components/presentational/Character'
 
 const params = {
-  limit: 10,
-  orderBy: 'modified'
+  limit: 20,
+  orderBy: 'name'
 }
 const endpoint = 'characters'
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     results: state.api.results
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onLoad: (params, endpoint) => {
-      dispatch(apiCall(params, endpoint) )
-    }
-  }
-}
-
 class CharacterList extends React.Component {
-
-  componentWillMount() {
-    this.props.onLoad(params, endpoint);
-  }
 
   render() {
     const chars = this.props.results.map((item, index) =>
@@ -39,16 +27,18 @@ class CharacterList extends React.Component {
       />
     );
 
-    if(chars.length > 0) {
-      return <div>{chars}</div>
-    }else{
-      return null
-    }
+    return (
+      <div>
+        <Search query='nameStartsWith' params={ params } endpoint={ endpoint }/>
+        {chars.length > 0 &&
+          chars
+        }
+      </div>
+    );
   }
 
 }
 
 export default CharacterList = connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(CharacterList)
