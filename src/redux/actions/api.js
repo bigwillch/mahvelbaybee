@@ -16,22 +16,32 @@ export const apiResponse = (response) => {
 }
 
 // Thunk action wrapper
-export const apiCall = (params, endpoint) => (dispatch) => {
-  const ts = Date.now();
-  axios.get('http://gateway.marvel.com/v1/public/' + endpoint, {
-    params: { ...params,
-      apikey: auth.marvel.public,
-      ts: ts,
-      hash: md5(ts+auth.marvel.private+auth.marvel.public)
+export function apiCall(params, endpoint) {
+  const thunk = dispatch => {
+    const ts = Date.now();
+    axios.get('http://gateway.marvel.com/v1/public/' + endpoint, {
+      params: { ...params,
+        apikey: auth.marvel.public,
+        ts: ts,
+        hash: md5(ts+auth.marvel.private+auth.marvel.public)
+      }
+    })
+    .then(response => {
+      dispatch(apiResponse(response))
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  };
+  thunk.meta = {
+    debounce: {
+      time: 200,
+      key: 'API_CALL'
     }
-  })
-  .then(response => {
-    dispatch(apiResponse(response))
-  })
-  .catch(error => {
-    console.log(error);
-  });
+  };
+  return thunk;
 }
+
 
 const initialState = {
   results: []
