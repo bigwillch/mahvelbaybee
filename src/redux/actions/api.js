@@ -1,7 +1,30 @@
 // import { createActions, handleActions, combineActions } from 'redux-actions';
-import axios from 'axios';
+// import axios from 'axios';
+import cachios from 'cachios';
 import md5 from 'md5';
 import auth from 'auth.json'; // use process.env?
+
+const ts = Date.now();
+const authParams = {
+  apikey: auth.marvel.public,
+  ts: ts,
+  hash: md5(ts+auth.marvel.private+auth.marvel.public)
+}
+
+cachios.getCacheIdentifier = function (config) {
+  const params = {};
+  for (var property in config.params) {
+    if (!authParams[property]) {
+      params[property] = config.params[property];
+    }
+  }
+  return {
+    method: config.method,
+    url: config.url,
+    params: params,
+    data: config.data,
+  };
+};
 
 export const API_RESPONSE = 'API_RESPONSE';
 
@@ -18,13 +41,9 @@ export const apiResponse = (response) => {
 // Thunk action wrapper
 export function apiCall(params, endpoint) {
   const thunk = dispatch => {
-    const ts = Date.now();
-    axios.get('http://gateway.marvel.com/v1/public/' + endpoint, {
-      params: { ...params,
-        apikey: auth.marvel.public,
-        ts: ts,
-        hash: md5(ts+auth.marvel.private+auth.marvel.public)
-      }
+    cachios.get('http://gateway.marvel.com/v1/public/' + endpoint, {
+      ttl: 300,
+      params: { ...params, ...authParams }
     })
     .then(response => {
       dispatch(apiResponse(response))

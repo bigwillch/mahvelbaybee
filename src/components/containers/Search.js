@@ -29,7 +29,6 @@ class Search extends Component {
   }
 
   render() {
-   console.log(this.props)
    return (
      <form>
        <input
