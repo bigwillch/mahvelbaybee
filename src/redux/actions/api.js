@@ -1,8 +1,9 @@
 // import { createActions, handleActions, combineActions } from 'redux-actions';
-import { API_RESPONSE } from 'redux/constants/actionTypes'
 import axios from 'axios';
 import md5 from 'md5';
 import auth from 'auth.json';
+
+export const API_RESPONSE = 'API_RESPONSE';
 
 // Action creators
 export const apiResponse = (response) => {
@@ -15,9 +16,9 @@ export const apiResponse = (response) => {
 }
 
 // Thunk action wrapper
-export const apiCall = (params) => (dispatch) => {
+export const apiCall = (params, endpoint) => (dispatch) => {
   const ts = Date.now();
-  axios.get('http://gateway.marvel.com/v1/public/characters', {
+  axios.get('http://gateway.marvel.com/v1/public/' + endpoint, {
     params: { ...params,
       apikey: auth.marvel.public,
       ts: ts,

@@ -3,10 +3,11 @@ import { connect } from 'react-redux'
 import { apiCall } from 'redux/actions/api'
 import Character from 'components/presentational/Character'
 
-let params = {
+const params = {
   limit: 10,
   orderBy: 'modified'
 }
+const endpoint = 'characters'
 
 const mapStateToProps = (state) => {
   console.log(state);
@@ -17,8 +18,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onLoad: (params) => {
-      dispatch(apiCall(params) )
+    onLoad: (params, endpoint) => {
+      dispatch(apiCall(params, endpoint) )
     }
   }
 }
@@ -26,13 +27,17 @@ const mapDispatchToProps = (dispatch) => {
 class CharacterList extends React.Component {
 
   componentWillMount() {
-    this.props.onLoad(params);
+    this.props.onLoad(params, endpoint);
   }
 
   render() {
-    const chars = this.props.results.map((item, index) => {
-      return <Character key={index} name={item.name} {...index} />
-    });
+    const chars = this.props.results.map((item, index) =>
+      <Character
+        key={index}
+        name={item.name}
+        img={item.thumbnail.path + '.' + item.thumbnail.extension}
+      />
+    );
 
     if(chars.length > 0) {
       return <div>{chars}</div>
