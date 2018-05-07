@@ -46,7 +46,7 @@ export const apiResponse = (response) => {
 // Thunk action wrapper
 export function apiCall(params, endpoint) {
   const thunk = dispatch => {
-    cachios.get('http://gateway.marvel.com/v1/public/' + endpoint, {
+    cachios.get('//gateway.marvel.com/v1/public/' + endpoint, {
       ttl: 300,
       params: { ...params, ...authParams }
     })
