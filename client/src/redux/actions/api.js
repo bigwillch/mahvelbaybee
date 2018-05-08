@@ -1,6 +1,6 @@
 // import { createActions, handleActions, combineActions } from 'redux-actions';
-// import axios from 'axios';
-import cachios from 'cachios';
+import axios from 'axios';
+// import cachios from 'cachios';
 import md5 from 'md5';
 
 const auth = {
@@ -16,20 +16,20 @@ const authParams = {
   hash: md5(ts+auth.marvel.private+auth.marvel.public)
 }
 
-cachios.getCacheIdentifier = function (config) {
-  const params = {};
-  for (var property in config.params) {
-    if (!authParams[property]) {
-      params[property] = config.params[property];
-    }
-  }
-  return {
-    method: config.method,
-    url: config.url,
-    params: params,
-    data: config.data,
-  };
-};
+// cachios.getCacheIdentifier = function (config) {
+//   const params = {};
+//   for (var property in config.params) {
+//     if (!authParams[property]) {
+//       params[property] = config.params[property];
+//     }
+//   }
+//   return {
+//     method: config.method,
+//     url: config.url,
+//     params: params,
+//     data: config.data,
+//   };
+// };
 
 export const API_RESPONSE = 'API_RESPONSE';
 export const API_CLEAR = 'API_CLEAR';
@@ -56,8 +56,8 @@ export const apiClear = () => {
 // Thunk action wrapper
 export function apiCall(params, endpoint) {
   const thunk = dispatch => {
-    cachios.get('//gateway.marvel.com/v1/public/' + endpoint, {
-      ttl: 300,
+    axios.get('//gateway.marvel.com/v1/public/' + endpoint, {
+      // ttl: 300,
       params: { ...params, ...authParams }
     })
     .then(response => {

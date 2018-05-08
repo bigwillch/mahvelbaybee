@@ -26,8 +26,8 @@ class Search extends Component {
      query: this.search.value
     }, () => {
      if (this.state.query && this.state.query.length > 1) {
+       this.props.onChange({...this.props.params, [this.props.query]: this.state.query}, this.props.endpoint);
        if (this.state.query.length % 2 === 0) {
-         this.props.onChange({...this.props.params, [this.props.query]: this.state.query}, this.props.endpoint);
        }
      } else if (!this.state.query) {
        this.clearSearch();
