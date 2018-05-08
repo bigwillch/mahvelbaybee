@@ -56,7 +56,8 @@ export const apiClear = () => {
 // Thunk action wrapper
 export function apiCall(params, endpoint) {
   const thunk = dispatch => {
-    axios.get('//gateway.marvel.com/v1/public/' + endpoint, {
+    // axios.get('//gateway.marvel.com/v1/public/' + endpoint, {
+    axios.get('//localhost:5000/api/marvel', {
       // ttl: 300,
       params: { ...params, ...authParams }
     })
