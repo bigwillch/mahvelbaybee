@@ -16,6 +16,9 @@ const authParams = {
   hash: md5(ts+auth.marvel.private+auth.marvel.public)
 }
 
+const CancelToken = axios.CancelToken;
+let cancel = null;
+
 // cachios.getCacheIdentifier = function (config) {
 //   const params = {};
 //   for (var property in config.params) {
@@ -55,11 +58,19 @@ export const apiClear = () => {
 
 // Thunk action wrapper
 export function apiCall(params, endpoint) {
+  if (typeof cancel === 'function') {
+    cancel();
+  }
   const thunk = dispatch => {
     // axios.get('//gateway.marvel.com/v1/public/' + endpoint, {
     axios.get('//localhost:5000/api/marvel', {
       // ttl: 300,
-      params: { ...params, ...authParams }
+      params: { ...params, ...authParams },
+      cancelToken: new CancelToken(
+        function executor(c) {
+          cancel = c;
+        }
+      )
     })
     .then(response => {
       dispatch(apiResponse(response))
