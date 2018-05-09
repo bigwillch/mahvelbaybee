@@ -19,20 +19,6 @@ const authParams = {
 const CancelToken = axios.CancelToken;
 let cancel = null;
 
-// cachios.getCacheIdentifier = function (config) {
-//   const params = {};
-//   for (var property in config.params) {
-//     if (!authParams[property]) {
-//       params[property] = config.params[property];
-//     }
-//   }
-//   return {
-//     method: config.method,
-//     url: config.url,
-//     params: params,
-//     data: config.data,
-//   };
-// };
 
 export const API_RESPONSE = 'API_RESPONSE';
 export const API_CLEAR = 'API_CLEAR';
