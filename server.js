@@ -63,12 +63,12 @@ app.get('/api/marvel', (req, res, next) => {
     } else if (err) {
         console.log('redis error', err);
     } else { // Key does not exist in Redis store
-      // Fetch directly from Wikipedia API
+      // Fetch directly from API
       return axios.get(searchUrl)
         .then(response => {
           const responseJSON = response.data;
-          // Save the Wikipedia API response in Redis store
-          client.setex(`marvel:${query}`, 3600, JSON.stringify({ source: 'Redis Cache', ...responseJSON, }));
+          // Save the API response in Redis store
+          client.setex(`marvel:${query}`, 86400, JSON.stringify({ source: 'Redis Cache', ...responseJSON, }));
           // Send JSON response to client
           return res.status(200).json({ source: 'Marvel API', ...responseJSON, });
         })
