@@ -1,6 +1,6 @@
 // import { createActions, handleActions, combineActions } from 'redux-actions';
 import axios from 'axios';
-// import cachios from 'cachios';
+
 import md5 from 'md5';
 
 const auth = {
@@ -44,9 +44,8 @@ export const apiClear = () => {
 
 // Thunk action wrapper
 export function apiCall(params, endpoint) {
-  if (typeof cancel === 'function') {
-    cancel();
-  }
+  typeof cancel === 'function' && cancel()
+
   const thunk = dispatch => {
     // axios.get('//gateway.marvel.com/v1/public/' + endpoint, {
     axios.get('//localhost:5000/api/marvel', {

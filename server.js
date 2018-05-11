@@ -36,6 +36,9 @@ process.on('unhandledRejection', (reason, p) => {
 
 // res.send({ express: 'Hello From Express' });
 
+const CancelToken = axios.CancelToken;
+let cancel = null;
+
 const authParams = {
   apikey: null,
   ts: null,
@@ -44,6 +47,10 @@ const authParams = {
 
 // create an api/search route
 app.get('/api/marvel', (req, res, next) => {
+
+  req.on('close', function (err){
+    typeof cancel === 'function' && cancel();
+  });
 
   // separate auth and search params
   for (var property in authParams) {
@@ -64,17 +71,23 @@ app.get('/api/marvel', (req, res, next) => {
         console.log('redis error', err);
     } else { // Key does not exist in Redis store
       // Fetch directly from API
-      return axios.get(searchUrl)
-        .then(response => {
-          const responseJSON = response.data;
-          // Save the API response in Redis store
-          client.setex(`marvel:${query}`, 86400, JSON.stringify({ source: 'Redis Cache', ...responseJSON, }));
-          // Send JSON response to client
-          return res.status(200).json({ source: 'Marvel API', ...responseJSON, });
-        })
-        .catch(err => {
-          console.log('axios error', err);
-        });
+      return axios.get(searchUrl, {
+        cancelToken: new CancelToken(
+          function executor(c) {
+            cancel = c;
+          }
+        )
+      })
+      .then(response => {
+        const responseJSON = response.data;
+        // Save the API response in Redis store
+        client.setex(`marvel:${query}`, 86400, JSON.stringify({ source: 'Redis Cache', ...responseJSON, }));
+        // Send JSON response to client
+        return res.status(200).json({ source: 'Marvel API', ...responseJSON, });
+      })
+      .catch(err => {
+        console.log('axios error', err);
+      });
     }
   });
 });
