@@ -7,7 +7,7 @@
     "server-dev": "nodemon server.js",
     "server-build": "node server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server-dev\" \"yarn client-dev\"",
-    "build": "cd client && yarn; concurrently --kill-others-on-fail \"yarn server-build\" \"yarn client-build\""
+    "build": "cd client && yarn; cd ./; concurrently --kill-others-on-fail \"yarn server-build\" \"yarn client-build\""
   },
   "dependencies": {
     "axios": "^0.18.0",
