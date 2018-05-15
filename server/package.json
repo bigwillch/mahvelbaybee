@@ -1,9 +1,0 @@
-{
-  "name": "MahvelBaybee-server",
-  "version": "1.0.0",
-  "scripts": {
-    "dev": "nodemon server.js",
-    "build": "npm pack",
-    "deploy": "NODE_ENV=production node server.js"
-  }
-}

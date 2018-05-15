@@ -58,6 +58,7 @@ export function apiCall(params, endpoint) {
       )
     })
     .then(response => {
+      console.log(response)
       dispatch(apiResponse(response))
     })
     .catch(error => {

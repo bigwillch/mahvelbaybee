@@ -6,6 +6,7 @@ const qs = require('qs')
 const redis = require('redis')
 const app = express()
 const port = process.env.PORT || 5000
+import { characterResults } from './parseResults.js'
 
 app.use(cors())
 app.use(compression())
@@ -66,7 +67,8 @@ app.get('/api/marvel', (req, res, next) => {
   // Try fetching the result from Redis first in case we have it cached
   return client.get(`marvel:${query}`, (err, result) => {
     // If that key exist in Redis store
-    if (result) {
+    const no = false
+    if (result && no) {
       const resultJSON = JSON.parse(result);
       return res.status(200).json(resultJSON);
     } else if (err) {
@@ -81,7 +83,9 @@ app.get('/api/marvel', (req, res, next) => {
         )
       })
       .then(response => {
-        const responseJSON = response.data;
+        // const responseJSON = response.data;
+        const responseJSON = characterResults(response.data);
+
         // Save the API response in Redis store
         client.setex(`marvel:${query}`, 86400, JSON.stringify({ source: 'Redis Cache', ...responseJSON, }));
         // Send JSON response to client
