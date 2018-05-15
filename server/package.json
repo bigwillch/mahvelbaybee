@@ -1,8 +1,9 @@
 {
-  "name": "create-react-app-express",
+  "name": "MahvelBaybee-server",
   "version": "1.0.0",
   "scripts": {
     "dev": "nodemon server.js",
-    "build": "node server.js"
+    "build": "npm pack",
+    "deploy": "NODE_ENV=production node server.js"
   }
 }

@@ -1,14 +1,15 @@
 {
-  "name": "example-create-react-app-express",
+  "name": "MahvelBaybee",
   "version": "1.0.0",
   "scripts": {
     "client-build": "cd client yarn build",
-    "server-build": "node server.js",
+    "server-build": "yarn --cwd 'server' build",
     "dev": "concurrently -r -k \"yarn --cwd 'server' dev\" \"yarn --cwd 'client' start\"",
     "build": "yarn; yarn --cwd 'client'; yarn run server-build; yarn run client-build"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "compression": "^1.7.2",
     "concurrently": "^3.5.0",
     "cors": "^2.8.4",
     "express": "^4.16.3",

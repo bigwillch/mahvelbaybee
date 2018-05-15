@@ -1,12 +1,14 @@
-const express = require('express');
-const cors = require('cors');
-const axios = require('axios');
-const qs = require('qs');
-const redis = require('redis');
-const app = express();
-const port = process.env.PORT || 5000;
+const express = require('express')
+const cors = require('cors')
+const compression = require('compression')
+const axios = require('axios')
+const qs = require('qs')
+const redis = require('redis')
+const app = express()
+const port = process.env.PORT || 5000
 
 app.use(cors())
+app.use(compression())
 
 // setup redis connection
 const client = redis.createClient(12520, process.env.REDISLABS_URL, {no_ready_check: true});
