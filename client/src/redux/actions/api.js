@@ -28,7 +28,7 @@ export const apiResponse = (response) => {
   return {
     type: API_RESPONSE,
     payload: {
-      results: response.data.data.results
+      results: response.data.results
     }
   }
 }
@@ -47,10 +47,8 @@ export function apiCall(params, endpoint) {
   typeof cancel === 'function' && cancel()
 
   const thunk = dispatch => {
-    // axios.get('//gateway.marvel.com/v1/public/' + endpoint, {
     axios.get('//localhost:5000/api/marvel', {
-      // ttl: 300,
-      params: { ...params, ...authParams },
+      params: { ...params, ...authParams, endpoint },
       cancelToken: new CancelToken(
         function executor(c) {
           cancel = c;

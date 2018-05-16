@@ -60,9 +60,12 @@ app.get('/api/marvel', (req, res, next) => {
     authParams[property] = req.query[property]
     delete req.query[property]
   }
+  console.log(req.query)
+  const endpoint = req.query.endpoint ? req.query.endpoint :'';
+  delete req.query.endpoint
   const query = qs.stringify(req.query);
   const authQuery = qs.stringify(authParams);
-  const searchUrl = `http://gateway.marvel.com/v1/public/characters?${query}&${authQuery}`;
+  const searchUrl = `http://gateway.marvel.com/v1/public/${endpoint}?${query}&${authQuery}`;
 
   // Try fetching the result from Redis first in case we have it cached
   return client.get(`marvel:${query}`, (err, result) => {
