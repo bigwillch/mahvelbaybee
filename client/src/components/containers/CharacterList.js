@@ -23,7 +23,7 @@ class CharacterList extends React.Component {
       <Character
         key={index}
         name={item.name}
-        img={item.thumbnail.path + '.' + item.thumbnail.extension}
+        img={item.img}
       />
     );
 

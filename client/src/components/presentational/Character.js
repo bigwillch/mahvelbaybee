@@ -6,14 +6,14 @@ export default class Character extends React.Component {
 
   static propTypes = {
     name: PropTypes.string.isRequired,
-    img: PropTypes.string.isRequired
+    img: PropTypes.string
   }
 
   render() {
     return (
       <div>
         <h2>{ this.props.name }</h2>
-        { !this.props.img.includes('image_not_available') &&
+        { this.props.img &&
           <Image src={ this.props.img } />
         }
       </div>
