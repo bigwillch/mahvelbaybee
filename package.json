@@ -1,21 +1,33 @@
 {
-  "name": "example-create-react-app-express",
+  "name": "MahvelBaybee",
   "version": "1.0.0",
   "scripts": {
-    "client-dev": "cd client yarn start",
-    "client-build": "cd client yarn build",
-    "server-dev": "nodemon server.js",
-    "server-build": "node server.js &",
-    "dev": "concurrently -r -k \"yarn run server-dev\" \"yarn run client-dev\"",
-    "build": "yarn; yarn --cwd 'client'; yarn run server-build; yarn run client-build"
+    "start": "concurrently -r -k \"nodemon server/server.js --exec babel-node\" \"yarn --cwd 'client' start\"",
+    "build": "babel server -d server/dist; yarn --cwd 'client' build",
+    "serve": "node dist/index.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "compression": "^1.7.2",
     "concurrently": "^3.5.0",
     "cors": "^2.8.4",
     "express": "^4.16.3",
+    "md5": "^2.2.1",
+    "prop-types": "^15.6.1",
     "qs": "^6.5.2",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-lazy-load-image-component": "^1.1.1",
+    "react-redux": "^5.0.7",
+    "react-scripts": "1.1.4",
     "redis": "^2.8.0",
-    "response-time": "^2.3.2"
+    "redux": "^4.0.0",
+    "redux-actions": "^2.3.2",
+    "redux-debounced": "^0.5.0",
+    "redux-thunk": "^2.2.0",
+    "response-time": "^2.3.2",
+    "rimraf": "^2.6.2"
   }
 }
