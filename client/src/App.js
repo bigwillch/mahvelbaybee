@@ -1,3 +1,4 @@
+import 'Styles/App.scss';
 import React, { Component } from 'react';
 import CharacterList from './components/containers/CharacterList'
 
