@@ -28,12 +28,12 @@ class CharacterList extends React.Component {
     );
 
     return (
-      <div>
+      <React.Fragment>
         <Search query='nameStartsWith' params={ params } endpoint={ endpoint }/>
         {chars.length > 0 &&
           chars
         }
-      </div>
+      </React.Fragment>
     );
   }
 
