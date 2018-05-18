@@ -11,7 +11,7 @@ export default class Character extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="card">
         <h2>{ this.props.name }</h2>
         { this.props.img &&
           <Image src={ this.props.img } />
