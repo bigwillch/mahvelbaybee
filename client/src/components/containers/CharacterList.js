@@ -23,17 +23,17 @@ class CharacterList extends React.Component {
       <Character
         key={index}
         name={item.name}
-        img={item.thumbnail.path + '.' + item.thumbnail.extension}
+        img={item.img}
       />
     );
 
     return (
-      <div>
+      <React.Fragment>
         <Search query='nameStartsWith' params={ params } endpoint={ endpoint }/>
         {chars.length > 0 &&
           chars
         }
-      </div>
+      </React.Fragment>
     );
   }
 

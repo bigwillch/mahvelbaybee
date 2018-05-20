@@ -1,12 +1,17 @@
-const express = require('express');
-const cors = require('cors');
-const axios = require('axios');
-const qs = require('qs');
-const redis = require('redis');
-const app = express();
-const port = process.env.PORT || 5000;
+const express = require('express')
+const cors = require('cors')
+const compression = require('compression')
+const axios = require('axios')
+const qs = require('qs')
+const redis = require('redis')
+const app = express()
+const port = process.env.PORT || 5000
+import * as parseResults from './helpers/parseResults'
 
 app.use(cors())
+app.use(compression())
+
+const useRedisCache = false
 
 // setup redis connection
 const client = redis.createClient(12520, process.env.REDISLABS_URL, {no_ready_check: true});
@@ -47,7 +52,6 @@ const authParams = {
 
 // create an api/search route
 app.get('/api/marvel', (req, res, next) => {
-
   req.on('close', function (err){
     typeof cancel === 'function' && cancel();
   });
@@ -57,14 +61,16 @@ app.get('/api/marvel', (req, res, next) => {
     authParams[property] = req.query[property]
     delete req.query[property]
   }
+  const endpoint = req.query.endpoint ? req.query.endpoint :'';
+  delete req.query.endpoint
   const query = qs.stringify(req.query);
   const authQuery = qs.stringify(authParams);
-  const searchUrl = `http://gateway.marvel.com/v1/public/characters?${query}&${authQuery}`;
+  const searchUrl = `http://gateway.marvel.com/v1/public/${endpoint}?${query}&${authQuery}`;
 
   // Try fetching the result from Redis first in case we have it cached
   return client.get(`marvel:${query}`, (err, result) => {
     // If that key exist in Redis store
-    if (result) {
+    if (result && useRedisCache) {
       const resultJSON = JSON.parse(result);
       return res.status(200).json(resultJSON);
     } else if (err) {
@@ -79,9 +85,15 @@ app.get('/api/marvel', (req, res, next) => {
         )
       })
       .then(response => {
-        const responseJSON = response.data;
+        // const responseJSON = response.data;
+        console.log(endpoint)
+        console.log(parseResults)
+        const responseJSON = parseResults[endpoint](response.data);
+
         // Save the API response in Redis store
-        client.setex(`marvel:${query}`, 86400, JSON.stringify({ source: 'Redis Cache', ...responseJSON, }));
+        if (useRedisCache) {
+          client.setex(`marvel:${query}`, 86400, JSON.stringify({ source: 'Redis Cache', ...responseJSON, }));
+        }
         // Send JSON response to client
         return res.status(200).json({ source: 'Marvel API', ...responseJSON, });
       })

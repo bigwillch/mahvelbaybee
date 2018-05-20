@@ -1,30 +1,53 @@
 {
-  "name": "playground",
+  "name": "MahvelBaybee-client",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "axios": "^0.18.0",
-    "cachios": "^1.1.0",
-    "md5": "^2.2.1",
-    "prop-types": "^15.6.1",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
-    "react-lazy-load-image-component": "^1.1.1",
-    "react-redux": "^5.0.7",
-    "react-scripts": "1.1.4",
-    "redux": "^4.0.0",
-    "redux-actions": "^2.3.2",
-    "redux-debounced": "^0.5.0",
-    "redux-thunk": "^2.2.0"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
+    "test": "node scripts/test.js --env=jsdom"
   },
-  "bundleDependencies": [
-    "axios"
-  ],
-  "proxy": "http://localhost:5000/"
+  "proxy": "http://localhost:5000/",
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,mjs}"
+    ],
+    "setupFiles": [
+      "<rootDir>/config/polyfills.js"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.{js,jsx,mjs}",
+      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,mjs}"
+    ],
+    "testEnvironment": "node",
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|mjs|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$"
+    ],
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web"
+    },
+    "moduleFileExtensions": [
+      "web.js",
+      "js",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node",
+      "mjs"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  }
 }
